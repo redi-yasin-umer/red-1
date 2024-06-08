@@ -1,7 +1,15 @@
-import { Product } from '@/lib/models/ProductModel'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+
+interface Product {
+  slug: string;
+  name: string;
+  image: string;
+  brand: string;
+  price: number;
+  // Other properties...
+}
 
 export default function ProductItem({ product }: { product?: Product }) {
   // Check if product is undefined
@@ -41,5 +49,5 @@ export default function ProductItem({ product }: { product?: Product }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
