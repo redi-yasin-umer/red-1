@@ -1,8 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import ProductItem from '@/components/products/ProductItem'
 import data from '@/lib/data'
-import productService from '../../lib/services/productService'
-import { convertDocToObj } from '@/lib/utils'
+import productService from '@/lib/services/productService'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -55,8 +53,9 @@ export default async function Home() {
       </div>
       <h2 className="text-2xl py-2">Latest Products</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        
         {latestProducts.map((product) => (
-            <ProductItem key={product.slug} product={convertDocToObj(product)} />
+          <ProductItem key={product.slug} product={product} />
         ))}
       </div>
     </>
