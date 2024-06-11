@@ -1,3 +1,4 @@
+
 'use client'
 import CheckoutSteps from '@/components/CheckoutSteps'
 import useCartService from '@/lib/hooks/useCartStore'
@@ -61,10 +62,10 @@ const Form = () => {
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return <></>
+  if (!mounted) return null;
 
   return (
     <div>
@@ -197,4 +198,4 @@ const Form = () => {
     </div>
   )
 }
-export default Form
+export default Form;
