@@ -1,24 +1,24 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
+'use client';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 type Inputs = {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 const Form = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
-  const params = useSearchParams()
-  const router = useRouter()
-  let callbackUrl = params.get('callbackUrl') || '/'
+  const params = useSearchParams();
+  const router = useRouter();
+  const callbackUrl = params.get('callbackUrl') || '/';
   const {
     register,
     handleSubmit,
@@ -31,15 +31,16 @@ const Form = () => {
       password: '',
       confirmPassword: '',
     },
-  })
+  });
+
   useEffect(() => {
     if (session && session.user) {
-      router.push(callbackUrl)
+      router.push(callbackUrl);
     }
-  }, [callbackUrl, params, router, session])
+  }, [callbackUrl, router, session]);
 
   const formSubmit: SubmitHandler<Inputs> = async (form) => {
-    const { name, email, password } = form
+    const { name, email, password } = form;
 
     try {
       const res = await fetch('/api/auth/register', {
@@ -52,25 +53,27 @@ const Form = () => {
           email,
           password,
         }),
-      })
+      });
+
       if (res.ok) {
         return router.push(
           `/signin?callbackUrl=${callbackUrl}&success=Account has been created`
-        )
+        );
       } else {
-        const data = await res.json()
-        throw new Error(data.message)
+        const data = await res.json();
+        throw new Error(data.message);
       }
     } catch (err: any) {
       const error =
         err.message && err.message.indexOf('E11000') === 0
           ? 'Email is duplicate'
-          : err.message
-      toast.error(error || 'error')
+          : err.message;
+      toast.error(error || 'An error occurred');
     }
-  }
+  };
+
   return (
-    <div className="max-w-sm  mx-auto card bg-base-300 my-4">
+    <div className="max-w-sm mx-auto card bg-base-300 my-4">
       <div className="card-body">
         <h1 className="card-title">Register</h1>
         <form onSubmit={handleSubmit(formSubmit)}>
@@ -107,7 +110,7 @@ const Form = () => {
               className="input input-bordered w-full max-w-sm"
             />
             {errors.email?.message && (
-              <div className="text-error"> {errors.email.message}</div>
+              <div className="text-error">{errors.email.message}</div>
             )}
           </div>
           <div className="my-2">
@@ -136,8 +139,8 @@ const Form = () => {
               {...register('confirmPassword', {
                 required: 'Confirm Password is required',
                 validate: (value) => {
-                  const { password } = getValues()
-                  return password === value || 'Passwords should match!'
+                  const { password } = getValues();
+                  return password === value || 'Passwords should match!';
                 },
               })}
               className="input input-bordered w-full max-w-sm"
@@ -169,7 +172,7 @@ const Form = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;
