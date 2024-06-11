@@ -96,6 +96,11 @@ export default function useCartService() {
         paymentMethod,
       })
     },
+    clear: () => {
+      cartStore.setState({
+        items: [],
+      })
+    },
   }
 }
 const calcPrice = (items: OrderItem[]) => {
