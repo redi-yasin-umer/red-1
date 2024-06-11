@@ -3,7 +3,6 @@ import data from '@/lib/data'
 import productService from '@/lib/services/productService'
 import { Metadata } from 'next'
 import Link from 'next/link'
-
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME || 'Next Amazona V2',
   description:
