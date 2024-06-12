@@ -3,9 +3,8 @@ import { auth } from '@/lib/auth'
 import OrderModel from '@/lib/models/OrderModel'
 import UserModel from '@/lib/models/UserModel'
 import ProductModel from '@/lib/models/ProductModel'
-
 export const GET = auth(async (req: any) => {
-  if (!req.auth || !req.auth.user?.isAdmin) {
+  if (!req.auth) {
     return Response.json(
       { message: 'unauthorized' },
       {
@@ -13,13 +12,10 @@ export const GET = auth(async (req: any) => {
       }
     )
   }
-
   await dbConnect()
-
   const ordersCount = await OrderModel.countDocuments()
   const productsCount = await ProductModel.countDocuments()
   const usersCount = await UserModel.countDocuments()
-
   const ordersPriceGroup = await OrderModel.aggregate([
     {
       $group: {
@@ -30,7 +26,6 @@ export const GET = auth(async (req: any) => {
   ])
   const ordersPrice =
     ordersPriceGroup.length > 0 ? ordersPriceGroup[0].sales : 0
-
   const salesData = await OrderModel.aggregate([
     {
       $group: {
@@ -41,7 +36,6 @@ export const GET = auth(async (req: any) => {
     },
     { $sort: { _id: 1 } },
   ])
-
   const productsData = await ProductModel.aggregate([
     {
       $group: {
@@ -51,7 +45,6 @@ export const GET = auth(async (req: any) => {
     },
     { $sort: { _id: 1 } },
   ])
-
   const usersData = await UserModel.aggregate([
     {
       $group: {
@@ -61,7 +54,6 @@ export const GET = auth(async (req: any) => {
     },
     { $sort: { _id: 1 } },
   ])
-
   return Response.json({
     ordersCount,
     productsCount,

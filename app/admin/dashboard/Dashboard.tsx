@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { Bar, Doughnut, Line } from 'react-chartjs-2'
 import useSWR from 'swr'
-import { formatNumber } from '../../../lib/utils'
+import { formatNumber } from '@/lib/utils'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,7 +40,8 @@ export const options = {
 }
 
 const Dashboard = () => {
-  const { data: summary, error } = useSWR(`/api/admin/orders/summary`)
+  const { data: summary, error } = useSWR(`/api/orders/summary`)
+
   if (error) return error.message
   if (!summary) return 'Loading...'
 
